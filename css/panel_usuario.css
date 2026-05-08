@@ -1,0 +1,221 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
+
+/* ========== BASE ========== */
+body {
+    background: linear-gradient(135deg, #2e325e 0%, #2e325e 100%);
+    min-height: 100vh;
+    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding-top: 80px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* ========== BOTÓN INICIO (fijo arriba izquierda) ========== */
+#inicio {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 9999;
+    width: 140px;
+    height: 50px;
+    padding: 0;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.88rem;
+    text-decoration: none;
+    box-shadow: 0 8px 25px rgba(0, 123, 255, 0.4);
+    transition: all 0.3s ease;
+    background: linear-gradient(45deg, #007bff, #0056b3) !important;
+    color: white !important;
+    border: none;
+}
+
+#inicio:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 35px rgba(0, 123, 255, 0.6);
+    background: linear-gradient(45deg, #0056b3, #007bff) !important;
+    color: white !important;
+    text-decoration: none !important;
+}
+
+#inicio .btn-icon {
+    margin-right: 5px;
+    font-size: 1.1rem;
+}
+
+/* ========== BOTÓN CERRAR SESIÓN (fijo arriba derecha) ========== */
+#cerrar_sesion {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    width: 160px;
+    height: 50px;
+    padding: 0;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.88rem;
+    text-decoration: none;
+    box-shadow: 0 8px 25px rgba(220, 53, 69, 0.4);
+    transition: all 0.3s ease;
+    background: linear-gradient(45deg, #dc3545, #c82333) !important;
+    color: white !important;
+    border: none;
+}
+
+#cerrar_sesion:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 35px rgba(220, 53, 69, 0.6);
+    background: linear-gradient(45deg, #c82333, #dc3545) !important;
+    color: white !important;
+    text-decoration: none !important;
+}
+
+#cerrar_sesion .btn-icon {
+    margin-right: 6px;
+    font-size: 1.1rem;
+}
+
+/* ========== TÍTULO ========== */
+h1 {
+    color: white !important;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    letter-spacing: 1px;
+}
+
+/* ========== BOTÓN NUEVO PERFIL ========== */
+.btn-success {
+    background: linear-gradient(45deg, #28a745, #1e7e34) !important;
+    border: none !important;
+    border-radius: 12px !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    padding: 10px 24px !important;
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+    transition: all 0.3s ease !important;
+}
+
+.btn-success:hover {
+    background: linear-gradient(45deg, #1e7e34, #28a745) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(40, 167, 69, 0.5) !important;
+}
+
+/* ========== CARD / TABLA CONTENEDOR ========== */
+.card-body {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    padding: 30px !important;
+}
+
+/* ========== TABLA ========== */
+.table {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.92rem;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.table thead.table-dark th {
+    background: linear-gradient(45deg, #000102, #000000) !important;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    border: none;
+    padding: 14px 16px;
+}
+
+.table tbody tr {
+    transition: all 0.2s ease;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(46, 50, 94, 0.08) !important;
+    transform: scale(1.005);
+}
+
+.table td {
+    padding: 12px 16px;
+    vertical-align: middle;
+    color: #333;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(46, 50, 94, 0.04);
+}
+
+/* ========== BOTONES ACCIONES ========== */
+.acciones .btn {
+    border-radius: 8px;
+    font-size: 0.85rem;
+    padding: 6px 12px;
+    transition: all 0.2s ease;
+}
+
+.acciones .btn-warning {
+    background: linear-gradient(45deg, #ffc107, #e0a800);
+ 
+   
+}
+
+.acciones .btn-warning:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(255, 193, 7, 0.6);
+}
+
+.acciones .btn-danger {
+    background: linear-gradient(45deg, #dc3545, #c82333) !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+}
+
+.acciones .btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(220, 53, 69, 0.6);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    body {
+        padding-top: 80px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    #inicio {
+        width: 110px;
+        font-size: 0.78rem;
+    }
+
+    #cerrar_sesion {
+        width: 130px;
+        font-size: 0.78rem;
+    }
+
+    .card-body {
+        padding: 16px !important;
+    }
+
+    .table {
+        font-size: 0.8rem;
+    }
+}

@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+body {
+    background: linear-gradient(135deg, #2e325e 0%, #2e325e 100%);
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.menu-container {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-card {
+    /* Centrado perfecto horizontal y vertical */
+    position: absolute;
+    top: 20%;
+    left: 15%;
+    right: 15%;
+
+    /* Estilos adicionales recomendados */
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    padding: 40px;
+    z-index: 100;
+}
+
+
+.menu-title {
+    color: #333;
+    font-weight: 700;
+    margin-bottom: 40px;
+    font-size: 2.2rem;
+}
+
+.menu-btn {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-inicio {
+    background: linear-gradient(45deg, #007bff, #0056b3);
+    color: white;
+}
+
+.btn-inicio:hover {
+    background: linear-gradient(45deg, #0056b3, #007bff);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 123, 255, 0.4);
+}
+
+.btn-logout {
+    background: linear-gradient(45deg, #dc3545, #c82333);
+    color: white;
+    margin-top: 10px;
+}
+
+.btn-logout:hover {
+    background: linear-gradient(45deg, #c82333, #dc3545);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(220, 53, 69, 0.4);
+}
+
+.btn-icon {
+    margin-right: 10px;
+}
+
+@media (max-width: 576px) {
+    .menu-card {
+        padding: 30px 20px;
+        margin: 10px;
+    }
+
+    .menu-title {
+        font-size: 1.8rem;
+    }
+}
+
+/* Botón Cerrar Sesión FIJO arriba izquierda */
+#cerrar_sesion {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    left: auto;
+    z-index: 9999;
+    width: 160px;
+    height: 50px;
+    padding: 0;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.88rem;
+    text-decoration: none;
+    box-shadow: 0 8px 25px rgba(220, 53, 69, 0.4);
+    transition: all 0.3s ease;
+    background: linear-gradient(45deg, #dc3545, #c82333) !important;
+    color: white !important;
+    border: none;
+}
+
+#cerrar_sesion:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 35px rgba(220, 53, 69, 0.6);
+    background: linear-gradient(45deg, #c82333, #dc3545) !important;
+    color: white !important;
+    text-decoration: none !important;
+}
+
+#cerrar_sesion .btn-icon {
+    margin-right: 6px;
+    font-size: 1.1rem;
+}
+
+/* Espacio para el contenido (importante) */
+body {
+    padding-top: 80px;
+    padding-left: 190px;
+    /* Espacio para el botón */
+    min-height: 100vh;
+}
+
+/* Posicionar SOLO el botón #inicio arriba izquierda */
+#inicio {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 9999;
+    width: 140px;
+    height: 50px;
+    padding: 0;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 8px 25px rgba(0, 123, 255, 0.4);
+    transition: all 0.3s ease;
+    background: linear-gradient(45deg, #007bff, #0056b3) !important;
+    color: white !important;
+}
+
+#inicio:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 35px rgba(0, 123, 255, 0.6);
+    background: linear-gradient(45deg, #0056b3, #007bff) !important;
+    color: white !important;
+    text-decoration: none !important;
+}
+
+#inicio .btn-icon {
+    margin-right: 5px;
+    font-size: 1.1rem;
+}
+
+/* Espacio para el resto del contenido */
+body {
+    padding-top: 80px;
+    padding-left: 180px;
+    /* Espacio para el botón fijo */
+}
