@@ -4,7 +4,7 @@ include("../conexion/conexion.php");
 $con = connection();
 
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header("Location: index.php");
+    header("Location: ../index.php");
     exit;
 }
 
@@ -141,6 +141,24 @@ $estados_civiles = mysqli_fetch_all(mysqli_query($con, $sql_estados_civiles), MY
                        placeholder="Seleccione una fecha" required readonly>
             </div>
 
+            <!-- Comentarios -->
+            <div class="col-md-12 mb-3">
+                <label class="form-label">Comentarios</label>
+             <textarea name="comentarios" class="form-control" maxlength="500"></textarea>
+    <div class="textarea-counter">
+        <span id="contador2">0</span>/500 caracteres
+            </div>
+<script>
+    const textarea = document.querySelector('textarea[name="comentarios"]');
+    const contador = document.getElementById('contador2');
+
+    contador.textContent = textarea.value.length;
+
+    textarea.addEventListener('input', function() {
+        contador.textContent = this.value.length;
+        contador.style.color = this.value.length > 450 ? '#dc3545' : '#6c757d';
+    });
+</script>
             <!-- BOTONES -->
             <div class="d-flex justify-content-between mt-3">
                 <button type="submit" class="btn btn-success">

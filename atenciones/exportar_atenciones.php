@@ -19,6 +19,7 @@ $sql = "SELECT
             CONCAT(u.nombres, ' ', u.apellidos) AS usuario,
             c.rit,
             tc.nombre_tipo_causa,
+            r.nombre_responsable,
             a.fecha_atencion,
             (SELECT COUNT(*) FROM atenciones a2 WHERE a2.id_causa = a.id_causa AND a2.id_atencion <= a.id_atencion) AS numero_sesion,
             a.comentarios
@@ -26,6 +27,7 @@ $sql = "SELECT
         LEFT JOIN usuarios u ON a.id_usuario = u.id_usuario
         LEFT JOIN causas c ON a.id_causa = c.id_causa
         LEFT JOIN tipo_causa tc ON c.id_tipo_causa = tc.id_tipo_causa
+        LEFT JOIN responsables r ON a.id_responsable = r.id_responsable
         ORDER BY a.id_atencion DESC";
 
 $result = mysqli_query($con, $sql);
@@ -38,6 +40,7 @@ echo "\xEF\xBB\xBF";
         <th>Usuario</th>
         <th>RIT/ROL</th>
         <th>Tipo Causa</th>
+        <th>Responsable</th>
         <th>Fecha</th>
         <th>N° Sesión</th>
         <th>Comentarios</th>
@@ -48,6 +51,7 @@ echo "\xEF\xBB\xBF";
         <td><?= $row['usuario'] ?></td>
         <td><?= $row['rit'] ?></td>
         <td><?= $row['nombre_tipo_causa'] ?></td>
+        <td><?= $row['nombre_responsable'] ?></td>
         <td><?= $row['fecha_atencion'] ?></td>
         <td><?= $row['numero_sesion'] ?></td>
         <td><?= $row['comentarios'] ?></td>

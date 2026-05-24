@@ -4,7 +4,7 @@ include("../conexion/conexion.php");
 $con = connection();
 
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header("Location: index.php");
+    header("Location: ../index.php");
     exit;
 }
 
@@ -40,7 +40,6 @@ $result = mysqli_query($con, $sql);
 </a>
 
 <h1>Usuarios</h1>
-
 <div style="position:fixed; top:20px; left:50%; transform:translateX(-50%); z-index:9999;">
     <a href="exportar_usuarios.php" class="btn btn-success">
         <i class="fas fa-file-excel"></i> Descargar Excel
@@ -97,6 +96,7 @@ $result = mysqli_query($con, $sql);
                     <th>Sector</th>
                     <th>Teléfono Fijo</th>
                     <th>Fecha Ingreso</th>
+                    <th>Comentarios</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -115,16 +115,19 @@ $result = mysqli_query($con, $sql);
                     <td><?= $row['sector'] ?></td>
                     <td><?= $row['telefono_fijo'] ?></td>
                     <td><?= $row['fecha_ingreso'] ?></td>
+                    <td><?= $row['comentarios'] ?></td>
                     <td class="acciones">
                         <a href="editar_usuario.php?id_usuario=<?= $row['id_usuario'] ?>"
                             class="btn btn-warning btn-sm me-1">
                             <i class="fas fa-edit"></i>
                         </a>
+                        <?php if ($_SESSION['rol'] === 'admin'): ?>
                         <a href="eliminar_usuario.php?id_usuario=<?= $row['id_usuario'] ?>"
                             class="btn btn-danger btn-sm"
                             onclick="return confirm('¿Eliminar usuario?');">
                             <i class="fas fa-trash"></i>
                         </a>
+                        <?php endif; ?>
                     </td>
                 </tr>
                 <?php endwhile; ?>

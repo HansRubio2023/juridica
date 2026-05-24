@@ -4,7 +4,7 @@ include("../conexion/conexion.php");
 $con = connection();
 
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header("Location: index.php");
+    header("Location: ../index.php");
     exit;
 }
 
@@ -12,6 +12,7 @@ $tipos        = mysqli_fetch_all(mysqli_query($con, "SELECT * FROM tipo_causa"),
 $resultados   = mysqli_fetch_all(mysqli_query($con, "SELECT * FROM resultado_causa"), MYSQLI_ASSOC);
 $responsables = mysqli_fetch_all(mysqli_query($con, "SELECT * FROM responsables"), MYSQLI_ASSOC);
 $categorias   = mysqli_fetch_all(mysqli_query($con, "SELECT * FROM categoria"), MYSQLI_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
@@ -22,6 +23,7 @@ $categorias   = mysqli_fetch_all(mysqli_query($con, "SELECT * FROM categoria"), 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="../css/formulario.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -94,25 +96,26 @@ $categorias   = mysqli_fetch_all(mysqli_query($con, "SELECT * FROM categoria"), 
         </script>
 
         <div class="mb-3">
-            <label>Categoría</label>
-            <select name="id_categoria" class="form-select">
+            <label>Competencias</label>
+            <select name="id_categoria" class="form-select" id="selectCategoria">
+                <option value="">-- Seleccione --</option>
                 <?php foreach($categorias as $c): ?>
                     <option value="<?= $c['id_categoria'] ?>"><?= $c['nombre_categoria'] ?></option>
                 <?php endforeach; ?>
+                <option value="nueva">+ Agregar nueva competencia</option>
             </select>
+            <input type="text" class="form-control mt-2 d-none" id="nuevaCategoria"
+                   name="nueva_categoria" placeholder="Nueva competencia" maxlength="100">
         </div>
+
 
         <div class="mb-3">
             <label>Responsable</label>
-            <select name="id_responsable" class="form-select">
-                <?php foreach($responsables as $r): ?>
-                    <option value="<?= $r['id_responsable'] ?>"><?= $r['nombre_responsable'] ?></option>
-                <?php endforeach; ?>
-            </select>
+         <input type="text" name="responsable" class="form-control" value="<?= $_SESSION['usuario'] ?>"readonly>
         </div>
 
         <div class="mb-3">
-            <label>Resultado</label>
+            <label>Estado</label>
             <select name="id_resultado" class="form-select">
                 <?php foreach($resultados as $r): ?>
                     <option value="<?= $r['id_resultado_causa'] ?>"><?= $r['nombre_resultado_causa'] ?></option>
@@ -125,10 +128,25 @@ $categorias   = mysqli_fetch_all(mysqli_query($con, "SELECT * FROM categoria"), 
             <input type="file" name="archivo" class="form-control">
         </div>
 
-        <div class="mb-3">
-            <label>Observaciones</label>
-            <textarea name="observaciones" class="form-control"></textarea>
-        </div>
+      <div class="mb-3">
+    <label>Seguimiento</label>
+    <textarea name="observaciones" class="form-control" maxlength="500"></textarea>
+    <div class="textarea-counter">
+        <span id="contador2">0</span>/500 caracteres
+    </div>
+</div>
+
+<script>
+    const textarea = document.querySelector('textarea[name="observaciones"]');
+    const contador = document.getElementById('contador2');
+
+    contador.textContent = textarea.value.length;
+
+    textarea.addEventListener('input', function() {
+        contador.textContent = this.value.length;
+        contador.style.color = this.value.length > 450 ? '#dc3545' : '#6c757d';
+    });
+</script>
 
         <div class="d-flex justify-content-between mt-3">
             <button type="submit" class="btn btn-success">
@@ -179,5 +197,23 @@ document.querySelector('form').addEventListener('submit', function(e) {
 });
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+<script>
+new TomSelect('#selectCategoria', {
+    create: false,
+    maxOptions: false,
+    sortField: { field: 'text', direction: 'asc' },
+    onChange: function(value) {
+        const input = document.getElementById('nuevaCategoria');
+        if (value === 'nueva') {
+            input.classList.remove('d-none');
+            input.setAttribute('required', 'required');
+        } else {
+            input.classList.add('d-none');
+            input.removeAttribute('required');
+        }
+    }
+});
+</script>
 </body>
 </html>

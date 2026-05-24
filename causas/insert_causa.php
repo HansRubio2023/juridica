@@ -4,7 +4,7 @@ include("../conexion/conexion.php");
 $con = connection();
 
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header("Location: index.php");
+    header("Location: ../index.php");
     exit;
 }
 
@@ -12,7 +12,7 @@ $rit            = $_POST['rit'] ?? '';
 $id_usuario     = $_POST['id_usuario'] ?? '';
 $id_tipo_causa  = $_POST['id_tipo_causa'] ?? NULL;
 $id_categoria   = $_POST['id_categoria'] ?? NULL;
-$id_responsable = $_POST['id_responsable'] ?? NULL;
+$responsable = $_SESSION['usuario'] ?? NULL;
 $id_resultado   = $_POST['id_resultado'] ?? NULL;
 $observaciones  = $_POST['observaciones'] ?? '';
 
@@ -27,15 +27,22 @@ if ($id_tipo_causa === 'nueva' && !empty($_POST['nuevo_tipo_causa'])) {
     $id_tipo_causa = mysqli_insert_id($con);
 }
 
+// Nueva competencia
+if ($id_categoria === 'nueva' && !empty($_POST['nueva_categoria'])) {
+    $nueva_cat = $_POST['nueva_categoria'];
+    mysqli_query($con, "INSERT INTO categoria (nombre_categoria) VALUES ('$nueva_cat')");
+    $id_categoria = mysqli_insert_id($con);
+}
+
 $sql = "INSERT INTO causas (
             rit, id_usuario, id_tipo_causa, id_categoria,
-            id_responsable, id_resultado, observaciones
+            responsable, id_resultado, observaciones
         ) VALUES (
             '$rit',
             '$id_usuario',
             " . ($id_tipo_causa ? "'$id_tipo_causa'" : "NULL") . ",
             " . ($id_categoria ? "'$id_categoria'" : "NULL") . ",
-            " . ($id_responsable ? "'$id_responsable'" : "NULL") . ",
+            " . ($responsable ? "'$responsable'" : "NULL") . ",
             " . ($id_resultado ? "'$id_resultado'" : "NULL") . ",
             '$observaciones'
         )";

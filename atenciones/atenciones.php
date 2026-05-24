@@ -15,6 +15,7 @@ $sql = "SELECT
             CONCAT(u.nombres, ' ', u.apellidos) AS usuario,
             c.rit,
             tc.nombre_tipo_causa,
+            a.responsable,
             a.fecha_atencion,
             a.comentarios,
             (SELECT COUNT(*) FROM atenciones a2 WHERE a2.id_causa = a.id_causa) AS atenciones_causa,
@@ -51,6 +52,7 @@ $query = mysqli_query($con, $sql);
 <h1>Atenciones</h1>
 
 <div style="position:fixed; top:20px; left:50%; transform:translateX(-50%); z-index:9999;">
+       
     <a href="exportar_atenciones.php" class="btn btn-success">
         <i class="fas fa-file-excel"></i> Descargar Excel
     </a>
@@ -90,6 +92,7 @@ $query = mysqli_query($con, $sql);
                     <th>Usuario</th>
                     <th>RIT/ROL</th>
                     <th>Tipo Causa</th>
+                    <th>Responsable</th>
                     <th>Fecha</th>
                     <th>Atenciones por causa</th>
                     <th>N° Sesión</th>
@@ -107,6 +110,7 @@ $query = mysqli_query($con, $sql);
                     <td><?= $row['usuario'] ?></td>
                     <td><?= $row['rit'] ?></td>
                     <td><?= $row['nombre_tipo_causa'] ?></td>
+                    <td><?= $row['responsable'] ?></td>
                     <td><?= $row['fecha_atencion'] ?></td>
                     <td><?= $row['atenciones_causa'] ?></td>
                     <td><?= $row['numero_sesion'] ?></td>
@@ -116,11 +120,13 @@ $query = mysqli_query($con, $sql);
                            class="btn btn-warning btn-sm">
                            <i class="fas fa-edit"></i>
                         </a>
+                        <?php if ($_SESSION['rol'] === 'admin'): ?>
                         <a href="eliminar_atencion.php?id_atencion=<?= $row['id_atencion'] ?>"
                            class="btn btn-danger btn-sm"
                            onclick="return confirm('¿Eliminar esta atención?');">
                            <i class="fas fa-trash"></i>
                         </a>
+                        <?php endif; ?>
                     </td>
                 </tr>
                 <?php endwhile; ?>

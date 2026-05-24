@@ -71,8 +71,8 @@ $responsables = mysqli_fetch_all(mysqli_query($con, "SELECT * FROM responsables 
         <!-- Causa -->
         <div class="mb-3">
             <label>Causa (RIT/ROL) *</label>
-            <select name="id_causa" id="sel_causa" class="form-select" required>
-                <option value="">Ingrese primero el rut</option>
+            <select name="id_causa" id="sel_causa" class="form-select">
+                <option value="">Sin causa</option>
                 <?php foreach($causas as $c): ?>
                     <option value="<?= $c['id_causa'] ?>" data-usuario="<?= $c['id_usuario'] ?>" style="display:none">
                         <?= $c['rit'] ?>
@@ -84,12 +84,7 @@ $responsables = mysqli_fetch_all(mysqli_query($con, "SELECT * FROM responsables 
         <!-- Responsable -->
         <div class="mb-3">
             <label>Responsable *</label>
-            <select name="id_responsable" class="form-select" required>
-                <option value="">Seleccione</option>
-                <?php foreach($responsables as $r): ?>
-                    <option value="<?= $r['id_responsable'] ?>"><?= $r['nombre_responsable'] ?></option>
-                <?php endforeach; ?>
-            </select>
+           <input type="text" name="responsable" class="form-control" value="<?= $_SESSION['usuario'] ?>"readonly>
         </div>
 
         <!-- Fecha -->
@@ -99,11 +94,24 @@ $responsables = mysqli_fetch_all(mysqli_query($con, "SELECT * FROM responsables 
                    placeholder="Seleccione una fecha" required readonly>
         </div>
 
-        <!-- Comentarios -->
-        <div class="mb-3">
-            <label>Comentarios</label>
-            <textarea name="comentarios" class="form-control" rows="3"></textarea>
-        </div>
+           <!-- Comentarios -->
+            <div class="col-md-12 mb-3">
+                <label class="form-label">Comentarios</label>
+             <textarea name="comentarios" class="form-control" maxlength="500"></textarea>
+    <div class="textarea-counter">
+        <span id="contador2">0</span>/500 caracteres
+            </div>
+<script>
+    const textarea = document.querySelector('textarea[name="comentarios"]');
+    const contador = document.getElementById('contador2');
+
+    contador.textContent = textarea.value.length;
+
+    textarea.addEventListener('input', function() {
+        contador.textContent = this.value.length;
+        contador.style.color = this.value.length > 450 ? '#dc3545' : '#6c757d';
+    });
+</script>
 
         <div class="d-flex justify-content-between mt-3">
             <button type="submit" class="btn btn-success">
@@ -118,6 +126,7 @@ $responsables = mysqli_fetch_all(mysqli_query($con, "SELECT * FROM responsables 
 </div>
 
 <script>
+    // Guardar todas las causas para filtrado posterior
 const todasCausas = Array.from(document.querySelectorAll('#sel_causa option[data-usuario]'));
 
 // Auto formato RUT
@@ -150,6 +159,10 @@ document.getElementById('rut_input').addEventListener('blur', function() {
                 if (filtradas.length === 0) {
                     selCausa.innerHTML = '<option value="">Este usuario no tiene causas</option>';
                 } else {
+                    const sinCausa = document.createElement('option');
+                    sinCausa.value = '';
+                    sinCausa.textContent = 'Sin causa';
+                    selCausa.appendChild(sinCausa);
                     filtradas.forEach(opt => {
                         const nueva = opt.cloneNode(true);
                         nueva.style.display = '';

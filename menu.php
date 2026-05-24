@@ -48,28 +48,29 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         </a>
     <?php endif; ?>
 
+      <!-- Atenciones -->
+    <?php if ($_SESSION['rol'] === 'admin' || $_SESSION['rol'] === 'usuario'): ?>
+        <a href="atenciones/atenciones.php" class="btn btn-pacientes menu-btn" style="font-family: 'Poppins', sans-serif; font-size: 20px;">
+            <i class="fas fa-file-medical btn-icon"></i>
+            Atenciones
+        </a>
+        <?php endif; ?>
+
     <!-- Causas -->
     <a href="causas/causas.php" class="btn btn-pacientes menu-btn" style="font-family: 'Poppins', sans-serif; font-size: 20px;">
         <i class="fas fa-gavel btn-icon"></i>
         Causas
     </a>
 
-    <!-- Atenciones -->
-    <?php if ($_SESSION['rol'] === 'admin' || $_SESSION['rol'] === 'usuario'): ?>
-        <a href="atenciones/atenciones.php" class="btn btn-pacientes menu-btn" style="font-family: 'Poppins', sans-serif; font-size: 20px;">
-            <i class="fas fa-file-medical btn-icon"></i>
-            Atenciones
-        </a>
-    <?php endif; ?>
-
     <!-- Estadísticas -->
-    <?php if ($_SESSION['rol'] === 'admin' || $_SESSION['rol'] === 'usuario'): ?>
+     <!--
+     <?php //if ($_SESSION['rol'] === 'admin' || $_SESSION['rol'] === 'usuario'): ?>
         <a href="estadisticas/estadisticas.php" class="btn btn-pacientes menu-btn" style="font-family: 'Poppins', sans-serif; font-size: 20px;">
             <i class="fas fa-chart-bar btn-icon"></i>
             Estadísticas
         </a>
-    <?php endif; ?>
-
+    <?php //endif; ?>
+    -->
     <!-- Perfiles solo admin -->
     <?php if ($_SESSION['rol'] === 'admin'): ?>
         <a href="perfiles.php" class="btn btn-pacientes menu-btn" style="font-family: 'Poppins', sans-serif; font-size: 20px;">

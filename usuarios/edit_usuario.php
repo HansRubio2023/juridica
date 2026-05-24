@@ -5,7 +5,7 @@ include("../conexion/conexion.php");
 $con = connection();
 
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header("Location: index.php");
+    header("Location: ../index.php");
     exit;
 }
 
@@ -23,6 +23,7 @@ $id_estado_civil = $_POST['id_estado_civil'] ?? NULL;
 $id_comuna = $_POST['id_comuna'] ?? NULL;
 $domicilio = $_POST['domicilio'] ?? '';
 $sector = $_POST['sector'] ?? '';
+$comentario =$_POST['comentarios']?? '';
 
 // ==========================
 // SEPARAR RUT Y DV
@@ -59,7 +60,8 @@ $sql = "UPDATE usuarios SET
         id_estado_civil=" . ($id_estado_civil ? "'$id_estado_civil'" : "NULL") . ", 
         domicilio='$domicilio', 
         id_comuna=" . ($id_comuna ? "'$id_comuna'" : "NULL") . ", 
-        sector='$sector' 
+        sector='$sector',
+        comentarios='$comentario'
         WHERE id_usuario='$id_usuario'";
 
 $query = mysqli_query($con, $sql);

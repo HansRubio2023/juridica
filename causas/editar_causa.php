@@ -25,6 +25,7 @@ $tipos        = mysqli_fetch_all(mysqli_query($con, "SELECT * FROM tipo_causa"),
 $resultados   = mysqli_fetch_all(mysqli_query($con, "SELECT * FROM resultado_causa"), MYSQLI_ASSOC);
 $responsables = mysqli_fetch_all(mysqli_query($con, "SELECT * FROM responsables"),    MYSQLI_ASSOC);
 $categorias   = mysqli_fetch_all(mysqli_query($con, "SELECT * FROM categoria"),       MYSQLI_ASSOC);
+$esEstudiante = $_SESSION['rol'] === 'estudiante';
 ?>
 
 <!DOCTYPE html>
@@ -35,6 +36,7 @@ $categorias   = mysqli_fetch_all(mysqli_query($con, "SELECT * FROM categoria"), 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="../css/formulario.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -62,11 +64,11 @@ $categorias   = mysqli_fetch_all(mysqli_query($con, "SELECT * FROM categoria"), 
         <input type="hidden" name="id_usuario" id="id_usuario" value="<?= $causa['id_usuario'] ?>">
 
         <div class="mb-3">
-            <label>RUT *</label>
-            <input type="text" id="rut_input" class="form-control"
-                   value="<?= $causa['rut_completo'] ?>" required>
-        </div>
-
+    <label>RUT *</label>
+    <input type="text" id="rut_input" class="form-control"
+           value="<?= $causa['rut_completo'] ?>"
+           <?= $_SESSION['rol'] === 'estudiante' ? 'readonly' : '' ?> required>
+</div>
         <div class="mb-3">
             <label>Nombre</label>
             <input type="text" id="nombre_usuario" class="form-control" readonly
@@ -77,29 +79,32 @@ $categorias   = mysqli_fetch_all(mysqli_query($con, "SELECT * FROM categoria"), 
             <label>Apellido</label>
             <input type="text" id="apellido_usuario" class="form-control" readonly
                    value="<?= $causa['apellidos'] ?>">
+
         </div>
 
-        <div class="mb-3">
-            <label>RIT/ROL *</label>
-            <input type="text" name="rit" class="form-control" required
-                   value="<?= $causa['rit'] ?>">
-        </div>
+    <div class="mb-3">
+    <label>RIT/ROL *</label>
+    <input type="text" name="rit" class="form-control"
+           value="<?= $causa['rit'] ?>"
+           <?= $_SESSION['rol'] === 'estudiante' ? 'readonly' : '' ?> required>
+</div>
 
         <div class="mb-3">
-            <label>Tipo Causa *</label>
-            <select name="id_tipo_causa" class="form-select" id="selectTipoCausa" required>
-                <option value="">-- Seleccione --</option>
-                <?php foreach($tipos as $t): ?>
-                    <option value="<?= $t['id_tipo_causa'] ?>"
-                        <?= $t['id_tipo_causa'] == $causa['id_tipo_causa'] ? 'selected' : '' ?>>
-                        <?= $t['nombre_tipo_causa'] ?>
-                    </option>
-                <?php endforeach; ?>
-                <option value="nueva">+ Agregar nuevo tipo</option>
-            </select>
-            <input type="text" class="form-control mt-2 d-none" id="nuevoTipoCausa"
-                   name="nuevo_tipo_causa" placeholder="Nuevo tipo de causa" maxlength="100">
-        </div>
+    <label>Tipo Causa *</label>
+    <select name="id_tipo_causa" class="form-select" id="selectTipoCausa"
+            <?= $_SESSION['rol'] === 'estudiante' ? 'disabled' : '' ?> required>
+        <option value="">-- Seleccione --</option>
+        <?php foreach($tipos as $t): ?>
+            <option value="<?= $t['id_tipo_causa'] ?>"
+                <?= $t['id_tipo_causa'] == $causa['id_tipo_causa'] ? 'selected' : '' ?>>
+                <?= $t['nombre_tipo_causa'] ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+    <?php if ($_SESSION['rol'] === 'estudiante'): ?>
+        <input type="hidden" name="id_tipo_causa" value="<?= $causa['id_tipo_causa'] ?>">
+    <?php endif; ?>
+</div>
 
         <script>
         document.getElementById('selectTipoCausa').addEventListener('change', function() {
@@ -122,32 +127,40 @@ $categorias   = mysqli_fetch_all(mysqli_query($con, "SELECT * FROM categoria"), 
         </script>
 
         <div class="mb-3">
-            <label>Categoría</label>
-            <select name="id_categoria" class="form-select">
-                <?php foreach($categorias as $c): ?>
-                    <option value="<?= $c['id_categoria'] ?>"
-                        <?= $c['id_categoria'] == $causa['id_categoria'] ? 'selected' : '' ?>>
-                        <?= $c['nombre_categoria'] ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </div>
+    <label>Competencia</label>
+    <select name="id_categoria" class="form-select" id="selectCategoria"
+            <?= $_SESSION['rol'] === 'estudiante' ? 'disabled' : '' ?>>
+        <option value="">-- Seleccione --</option>
+        <?php foreach($categorias as $c): ?>
+            <option value="<?= $c['id_categoria'] ?>"
+                <?= $c['id_categoria'] == $causa['id_categoria'] ? 'selected' : '' ?>>
+                <?= $c['nombre_categoria'] ?>
+            </option>
+        <?php endforeach; ?>
+        <?php if ($_SESSION['rol'] !== 'estudiante'): ?>
+            <option value="nueva">+ Agregar nueva competencia</option>
+        <?php endif; ?>
+    </select>
+    <input type="text" class="form-control mt-2 d-none" id="nuevaCategoria"
+           name="nueva_categoria" placeholder="Nueva competencia" maxlength="100">
+    <?php if ($_SESSION['rol'] === 'estudiante'): ?>
+        <input type="hidden" name="id_categoria" value="<?= $causa['id_categoria'] ?>">
+    <?php endif; ?>
+</div>
 
-        <div class="mb-3">
+
+
+<!-- responsable -->
+<div class="mb-3">
             <label>Responsable</label>
-            <select name="id_responsable" class="form-select">
-                <?php foreach($responsables as $r): ?>
-                    <option value="<?= $r['id_responsable'] ?>"
-                        <?= $r['id_responsable'] == $causa['id_responsable'] ? 'selected' : '' ?>>
-                        <?= $r['nombre_responsable'] ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
+         <input type="text" name="responsable" class="form-control" value="<?= $_SESSION['usuario'] ?>"readonly>
         </div>
 
+        <!-- Estados -->
         <div class="mb-3">
-            <label>Resultado</label>
-            <select name="id_resultado" class="form-select">
+            <label>Estado</label>
+            <select name="id_resultado" class="form-select"
+                    <?= $_SESSION['rol'] === 'estudiante' ? 'disabled' : '' ?>>
                 <?php foreach($resultados as $r): ?>
                     <option value="<?= $r['id_resultado_causa'] ?>"
                         <?= $r['id_resultado_causa'] == $causa['id_resultado'] ? 'selected' : '' ?>>
@@ -155,12 +168,38 @@ $categorias   = mysqli_fetch_all(mysqli_query($con, "SELECT * FROM categoria"), 
                     </option>
                 <?php endforeach; ?>
             </select>
+            <?php if ($_SESSION['rol'] === 'estudiante'): ?>
+                <input type="hidden" name="id_resultado" value="<?= $causa['id_resultado'] ?>">
+            <?php endif; ?>
         </div>
 
-        <div class="mb-3">
-            <label>Observaciones</label>
-            <textarea name="observaciones" class="form-control"><?= $causa['observaciones'] ?></textarea>
-        </div>
+        <!--Seguimiento -->
+<div class="mb-3">
+    <label>Seguimiento</label>
+    <textarea name="observaciones" class="form-control" maxlength="500"><?= $causa['observaciones'] ?></textarea>
+    <div class="textarea-counter">
+        <span id="contador2">0</span>/500 caracteres
+    </div>
+</div>
+
+        <script>
+        // Contador de caracteres
+         document.querySelectorAll('textarea').forEach(textarea => {
+                                const contador = textarea.parentElement.querySelector('.textarea-counter span');
+                                const max = textarea.maxLength;
+                                
+                                textarea.addEventListener('input', function() {
+                                    let len = this.value.length;
+                                    contador.textContent = len;
+                                    
+                                    if (len > max * 0.9) {
+                                        contador.parentElement.style.color = '#dc3545';
+                                    } else {
+                                        contador.parentElement.style.color = '#6c757d';
+                                    }
+                                });
+                            });
+                        </script>
 
         <div class="d-flex justify-content-between mt-3">
             <button type="submit" class="btn btn-success">
@@ -211,5 +250,25 @@ document.querySelector('form').addEventListener('submit', function(e) {
 });
 </script>
 
+<?php if (!$esEstudiante): ?>
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+<script>
+new TomSelect('#selectCategoria', {
+    create: false,
+    maxOptions: false,
+    sortField: { field: 'text', direction: 'asc' },
+    onChange: function(value) {
+        const input = document.getElementById('nuevaCategoria');
+        if (value === 'nueva') {
+            input.classList.remove('d-none');
+            input.setAttribute('required', 'required');
+        } else {
+            input.classList.add('d-none');
+            input.removeAttribute('required');
+        }
+    }
+});
+</script>
+<?php endif; ?>
 </body>
 </html>

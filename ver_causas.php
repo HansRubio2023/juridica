@@ -79,9 +79,9 @@ $query = mysqli_query($con, $sql);
                 <tr>
                     <th>RIT/ROL</th>
                     <th>Tipo</th>
-                    <th>Resultado</th>
-                    <th>Observaciones</th>
-                    <th>Archivo</th>
+                    <th>Estado</th>
+                    <th>Seguimiento</th>
+                    <th>Visualizar</th>
                     <th>Fecha subida</th>
                 </tr>
             </thead>

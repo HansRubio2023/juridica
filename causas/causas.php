@@ -4,7 +4,7 @@ include("../conexion/conexion.php");
 $con = connection();
 
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header("Location: index.php");
+    header("Location: ../index.php");
     exit;
 }
 
@@ -18,7 +18,8 @@ $sql = "SELECT
         r.nombre_responsable,
         rc.nombre_resultado_causa,
         c.rit,
-        c.observaciones
+        c.observaciones,
+        c.responsable
     FROM causas c
     LEFT JOIN usuarios u ON c.id_usuario = u.id_usuario
     LEFT JOIN tipo_causa tc ON c.id_tipo_causa = tc.id_tipo_causa
@@ -52,9 +53,11 @@ $query = mysqli_query($con, $sql);
 <h1>Causas</h1>
 
 <div style="position:fixed; top:20px; left:50%; transform:translateX(-50%); z-index:9999;">
+     <?php if ($_SESSION['rol'] === 'admin' || $_SESSION['rol'] === 'usuario'): ?>
     <a href="exportar_causas.php" class="btn btn-success">
         <i class="fas fa-file-excel"></i> Descargar Excel
     </a>
+    <?php endif ?>
 </div>
 
 <div class="card-body">
@@ -93,11 +96,10 @@ $query = mysqli_query($con, $sql);
                     <th>Apellido</th>
                     <th>RIT/ROL</th>
                     <th>Tipo</th>
-                    <th>Categoría</th>
+                    <th>Competencia</th>
                     <th>Responsable</th>
-                    <th>Resultado</th>
-                    <th>Observaciones</th>
-                    <th>Archivos</th>
+                    <th>Estado</th>
+                    <th>Visualizar <br>Archivos</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -110,9 +112,9 @@ $query = mysqli_query($con, $sql);
                     <td><?= $row['rit'] ?></td>
                     <td><?= $row['nombre_tipo_causa'] ?></td>
                     <td><?= $row['nombre_categoria'] ?></td>
-                    <td><?= $row['nombre_responsable'] ?></td>
+                     <td><?= $row['responsable'] ?></td>
                     <td><?= $row['nombre_resultado_causa'] ?></td>
-                    <td><?= $row['observaciones'] ?></td>
+                  
                    <td>
                     <a href="ver_archivos.php?id_causa=<?= $row['id_causa'] ?>"
                     class="btn btn-info btn-sm">
@@ -120,18 +122,20 @@ $query = mysqli_query($con, $sql);
                     </a>
                     </td>
                     <td class="acciones">
-                        <?php if($_SESSION['rol'] == 'admin' || $_SESSION['rol'] == 'usuario'): ?>
+                       
                         <a href="editar_causa.php?id_causa=<?= $row['id_causa'] ?>"
                            class="btn btn-warning btn-sm">
                            <i class="fas fa-edit"></i>
                         </a>
+                        <?php if ($_SESSION['rol'] === 'admin'): ?>
                         <a href="eliminar_causa.php?id_causa=<?= $row['id_causa'] ?>"
                            class="btn btn-danger btn-sm"
                            onclick="return confirm('¿Eliminar esta causa?');">
                            <i class="fas fa-trash"></i>
                         </a>
-                        
                         <?php endif; ?>
+                        
+                     
                     </td>
                 </tr>
                 <?php endwhile; ?>

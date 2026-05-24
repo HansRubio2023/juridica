@@ -20,7 +20,7 @@ $res_usuario = mysqli_query($con, "SELECT CONCAT(rut, '-', dv) AS rut_completo, 
 $usuario = mysqli_fetch_assoc($res_usuario);
 
 $causas       = mysqli_fetch_all(mysqli_query($con, "SELECT id_causa, id_usuario, rit FROM causas ORDER BY rit"), MYSQLI_ASSOC);
-$responsables = mysqli_fetch_all(mysqli_query($con, "SELECT * FROM responsables ORDER BY nombre_responsable"), MYSQLI_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
@@ -93,17 +93,13 @@ $responsables = mysqli_fetch_all(mysqli_query($con, "SELECT * FROM responsables 
             </select>
         </div>
 
-        <!-- Responsable -->
-        <div class="mb-3">
-            <label>Responsable *</label>
-            <select name="id_responsable" class="form-select" required>
-                <?php foreach($responsables as $r): ?>
-                    <option value="<?= $r['id_responsable'] ?>" <?= $r['id_responsable'] == $atencion['id_responsable'] ? 'selected' : '' ?>>
-                        <?= $r['nombre_responsable'] ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </div>
+       <!-- Responsable -->
+<!-- Responsable -->
+<div class="mb-3">
+    <label>Responsable *</label>
+    <input type="text" name="responsable" class="form-control" 
+           value="<?= $_SESSION['usuario'] ?>" readonly>
+</div>
 
         <!-- Fecha -->
         <div class="mb-3">
@@ -113,10 +109,14 @@ $responsables = mysqli_fetch_all(mysqli_query($con, "SELECT * FROM responsables 
                    value="<?= $atencion['fecha_atencion'] ?>">
         </div>
 
+       
         <!-- Comentarios -->
         <div class="mb-3">
-            <label>Comentarios</label>
-            <textarea name="comentarios" class="form-control" rows="3"><?= $atencion['comentarios'] ?></textarea>
+            <label class="form-label">Comentarios</label>
+            <textarea name="comentarios" class="form-control" maxlength="500"><?= $atencion['comentarios'] ?></textarea>
+            <div class="textarea-counter">
+                <span id="contador2">0</span>/500 caracteres
+            </div>
         </div>
 
         <div class="d-flex justify-content-between mt-3">
@@ -130,6 +130,20 @@ $responsables = mysqli_fetch_all(mysqli_query($con, "SELECT * FROM responsables 
 
     </form>
 </div>
+
+<script>
+    const textarea = document.querySelector('textarea[name="comentarios"]');
+    const contador = document.getElementById('contador2');
+
+    contador.textContent = textarea.value.length;
+
+    textarea.addEventListener('input', function() {
+        contador.textContent = this.value.length;
+        contador.style.color = this.value.length > 450 ? '#dc3545' : '#6c757d';
+    });
+</script>
+
+       
 
 <script>
 const todasCausas = Array.from(document.querySelectorAll('#sel_causa option[data-usuario]'));

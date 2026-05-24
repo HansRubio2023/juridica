@@ -4,7 +4,7 @@ include("../conexion/conexion.php");
 $con = connection();
 
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-header("Location: index.php");
+    header("Location: ../index.php");
     exit;
 }
 
@@ -21,6 +21,7 @@ $id_estado_civil = $_POST['id_estado_civil'] ?? NULL;
 $id_comuna = $_POST['id_comuna'] ?? NULL;
 $domicilio = $_POST['domicilio'] ?? '';
 $sector        = $_POST['sector'] ?? '';
+$comentario = $_POST['comentario'] ?? '';
 $fecha_ingreso = $_POST['fecha_ingreso'] ?? date('Y-m-d');
 
 // ==========================
@@ -68,12 +69,12 @@ if (mysqli_num_rows($check) > 0) {
 // ==========================
 $sql = "INSERT INTO usuarios (
             rut, dv, nombres, apellidos, email, celular,
-            telefono_fijo, id_estado_civil, domicilio, id_comuna, sector, fecha_ingreso
+            telefono_fijo, id_estado_civil, domicilio, id_comuna, sector, fecha_ingreso,comentarios
         ) VALUES (
             '$rut', '$dv', '$nombres', '$apellidos', '$email', '$celular',
             '$telefono_fijo', " . ($id_estado_civil ? "'$id_estado_civil'" : "NULL") . ",
             '$domicilio', " . ($id_comuna ? "'$id_comuna'" : "NULL") . ",
-            '$sector', '$fecha_ingreso'
+            '$sector', '$fecha_ingreso', '$comentario'
         )";
 
 $result = mysqli_query($con, $sql);
